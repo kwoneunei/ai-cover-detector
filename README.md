@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎵 AI Cover Song Detection — 오디오 딥페이크 탐지 기술을 활용한 AI 커버곡 식별 시스템
 
 ---
@@ -155,3 +156,104 @@ YouTube/Bilibili 수집 (yt-dlp)
 | 설명 가능성      | 주로 모델 성능 비교 중심                                         | 단순 판별을 넘어서 **어느 구간이 왜 의심되는지** 보여주는 방향                     |
 | 저작권 보호와의 연결 | 직접적 활용보다는 탐지 연구 자체에 초점                                 | **AI 커버곡 식별을 통한 음성 저작권 보호 지원**에 초점                        |
 | 최종 산출물      | 데이터셋, baseline, benchmark 결과                           | 탐지 모델 + 웹/앱 형태의 **분석 시스템** + 결과 리포트                       |
+=======
+# ai-cover-detector
+
+# CoverGuard
+오디오 딥페이크 탐지 기술을 활용한 **AI 커버곡 식별 및 음성 저작권 보호 시스템**입니다.  
+이 프로젝트는 기존 오디오 딥페이크 탐지 모델이 실제 AI 커버곡 환경에서도 안정적으로 동작하는지 검증하고, 이를 바탕으로 사용자가 음원을 업로드하면 AI 커버곡 여부를 판별할 수 있는 웹 기반 시스템을 구현하는 것을 목표로 합니다.
+
+## 1. 프로젝트 개요
+최근 생성형 AI 기술의 발전으로 특정 가수의 목소리를 모방한 AI 커버곡이 유튜브와 SNS를 중심으로 빠르게 확산되고 있습니다.  
+이 과정에서 사용자는 실제 가수의 음성과 AI 음성을 구분하기 어려워졌고, 창작자와 권리자 입장에서는 음성권 및 저작권 침해 문제가 발생할 수 있습니다.  
+본 프로젝트는 이러한 문제를 해결하기 위해, 오디오 딥페이크 탐지 기술을 실제 AI 커버곡 환경에 적용하여 **음성 저작권 보호를 위한 판별 시스템**을 개발합니다.  
+
+## 2. 프로젝트 목표
+본 프로젝트의 목표는 다음과 같습니다.
+
+- 기존 오디오 딥페이크 탐지 모델의 **실환경 적용 가능성 검증**
+- 실제 업로드 환경을 반영한 학습을 통해 **탐지 성능 향상**
+- 사용자가 음원 파일을 업로드하면 AI 커버곡 여부를 판별하는 **웹 기반 서비스 구현**  
+
+## 3. 문제 정의
+기존 오디오 딥페이크 탐지 모델은 주로 연구용 데이터셋에서 성능이 검증되어 왔습니다.  
+하지만 실제 AI 커버곡처럼 압축, 리버브, 노이즈가 포함된 환경에서도 동일하게 동작하는지는 충분히 확인되지 않았습니다.  
+따라서 본 프로젝트에서는 공개 데이터셋으로 학습한 모델을 실제 유튜브 AI 커버곡 데이터에 적용하여 성능 차이를 분석하고, 이를 개선하기 위한 재학습 및 구조 보완을 수행합니다.  
+
+## 4. 주요 기능
+- 오디오 파일 업로드
+- 입력 음원의 AI 커버곡 여부 판별
+- 판별 결과 및 신뢰도 시각화
+- 실제 플랫폼 환경 음원에 대한 분석 지원
+- 공개 데이터셋 및 실제 수집 데이터 기반 성능 평가 
+
+## 5. 시스템 요구사항
+본 시스템은 다음 요구사항을 만족하도록 설계합니다.
+
+1. 사용자가 오디오 파일을 업로드할 수 있어야 합니다.
+2. 입력된 음원에 대해 AI 커버곡 여부를 판별할 수 있어야 합니다.
+3. 실제 플랫폼 환경의 음원에서도 안정적으로 결과를 제공할 수 있어야 합니다.
+4. 판별 결과를 사용자가 이해하기 쉬운 형태로 제공할 수 있어야 합니다.
+5. 웹 환경에서 업로드, 분석, 결과 확인 기능을 제공할 수 있어야 합니다.
+6. 공개 데이터셋과 실제 수집 데이터에 대해 성능을 측정할 수 있어야 합니다. 
+
+## 6. 개발 방법
+프로젝트는 다음과 같은 방식으로 진행합니다.
+
+### 6.1 모델 구현 및 적용
+Python 및 PyTorch 기반으로 기존 오디오 딥페이크 탐지 모델을 구현하고, 데이터 특성에 맞게 fine-tuning 및 일부 구조 개선을 수행합니다.  
+
+### 6.2 오디오 전처리
+Librosa와 FFmpeg를 활용하여 샘플링 주파수를 통일하고, 노이즈 환경을 고려한 오디오 전처리 및 특징 추출을 수행합니다.  
+
+### 6.3 데이터셋 구성
+SingFake 데이터셋을 기반으로 학습 데이터를 구성하고, 실제 AI 커버곡 데이터를 추가 수집하여 실환경 특성을 반영합니다.  
+
+### 6.4 실험 및 평가
+GPU 환경에서 모델 학습 및 추론을 수행하며, F1-score, ROC-AUC 등의 지표를 활용해 모델 성능을 평가하고 비교 분석합니다.  
+
+### 6.5 웹 서비스 구현
+Flask 또는 FastAPI 기반 백엔드를 구축하고, HTML/CSS/JavaScript 기반 프론트엔드를 통해 음원 업로드 및 판별 결과 확인 기능을 제공합니다.  
+
+## 7. 기술 스택
+### AI / 모델링
+- Python
+- PyTorch
+
+### 오디오 처리
+- Librosa
+- FFmpeg
+
+### 백엔드
+- Flask 또는 FastAPI
+
+### 프론트엔드
+- HTML
+- CSS
+- JavaScript
+
+### 실험 환경
+- GPU 환경 
+
+## 8. 기대 효과
+본 프로젝트를 통해 다음과 같은 결과를 기대할 수 있습니다.
+
+- 기존 딥페이크 탐지 모델의 실제 AI 커버곡 환경 성능 검증
+- AI 커버곡 특성을 반영한 데이터 기반 탐지 모델 구현
+- 음성 저작권 침해 가능성을 평가할 수 있는 웹 기반 서비스 구현 
+
+## 9. 향후 확장 방향
+- 더 다양한 실제 플랫폼 데이터 수집
+- 음성 유사도 분석 기능 고도화
+- 웹 서비스의 사용자 경험 개선
+- 창작자 및 권리자를 위한 실사용 도구로 확장
+
+## 10. 참고 문헌
+[1] Y. Zang, Y. Zhang, M. Heydari, and Z. Duan, “SingFake: Singing Voice Deepfake Detection,” ICASSP 2024, 2024.  
+[2] J. Jung, H. Heo, H. Tak, H. Shim, J. S. Chung, B. Lee, H. Yu, and N. Evans, “AASIST: Audio Anti-Spoofing using Integrated Spectro-Temporal Graph Attention Networks,” ICASSP 2022, 2022.  
+[3] A. Baevski, H. Zhou, A. Mohamed, and M. Auli, “wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations,” NeurIPS 2020, 2020.  
+[4] Y. Zang, J. Shi, Y. Zhang, R. Yamamoto, J. Han, Y. Tang, S. Xu, W. Zhao, J. Guo, T. Toda, and Z. Duan, “CtrSVDD: A Benchmark Dataset and Baseline Analysis for Controlled Singing Voice Deepfake Detection,” Interspeech 2024, 2024.  
+[5] Y. Zang, Y. Zhang, M. Heydari, and Z. Duan, “SingFake: Singing Voice Deepfake Detection Dataset,” SingFake Project Page, University of Rochester, 2024.  
+[6] H. Tak, J. Patino, M. Todisco, A. Nautsch, N. Evans, and A. Larcher, “End-to-End Anti-Spoofing with RawNet2,” ICASSP 2021, 2021.  
+[7] X. Wu, R. He, Z. Sun, and T. Tan, “A Light CNN for Deep Face Representation with Noisy Labels,” IEEE Transactions on Information Forensics and Security, 2018.  
+>>>>>>> 9e4c21f (readMe)
