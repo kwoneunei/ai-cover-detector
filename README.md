@@ -127,6 +127,7 @@ YouTube/Bilibili 수집 (yt-dlp)
 - 음원 파일 업로드만으로 AI 커버곡 여부를 확인할 수 있는 **웹 서비스 구현**
 - 음성 저작권 침해 방지에 기여할 수 있는 기술적·사회적 활용 가능성 검증
 
+
 ---
 
 ## 📚 참고 문헌
@@ -135,3 +136,22 @@ YouTube/Bilibili 수집 (yt-dlp)
 2. J. Jung et al., "AASIST: Audio Anti-Spoofing using Integrated Spectro-Temporal Graph Attention Networks," *ICASSP 2022*
 3. A. Baevski et al., "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations," *NeurIPS 2020*
 4. Y. Zang et al., "CtrSVDD: A Benchmark Dataset and Baseline Analysis for Controlled Singing Voice Deepfake Detection," *Interspeech 2024*
+
+
+
+
+
+
+----
+| 구분          | SingFake                                               | 우리 프로젝트                                                   |
+| ----------- | ------------------------------------------------------ | --------------------------------------------------------- |
+| 프로젝트 성격     | singing deepfake detection을 위한 **데이터셋 및 benchmark 연구** | AI 커버곡 식별을 실제로 수행하는 **서비스형 시스템 개발**                       |
+| 핵심 목표       | 인간 노래와 AI 노래를 구분할 수 있는 **탐지 문제 제안 및 성능 평가**            | 사용자가 업로드한 음원이 **AI 커버곡인지 아닌지 판별**하고 결과를 제공                |
+| 입력 데이터      | 연구용으로 정리된 **노래 오디오 클립 데이터셋**                           | 사용자가 실제로 업로드한 **완성 음원(mp3, wav 등)**                       |
+| 출력 형태       | bonafide / deepfake 분류 결과, benchmark 성능 수치             | AI 여부 판별 + **의심 구간 시각화 + 설명 가능한 분석 결과**                   |
+| 활용 목적       | 연구자들이 모델 성능을 비교하는 **기준 데이터셋 제공**                       | 일반 사용자·창작자·플랫폼이 활용할 수 있는 **실용적 판별 도구**                    |
+| 데이터 관점      | in-the-wild singing deepfake를 모아 **탐지 과제 자체를 정립**      | 선행연구를 바탕으로 **실제 사용 환경에 맞는 입력 처리 파이프라인** 구축                |
+| 시스템 흐름      | 데이터셋 기반 오프라인 실험 중심                                     | 업로드 → 전처리 → 구간 분할 → 판별 → 결과 리포트까지 이어지는 **end-to-end 시스템** |
+| 설명 가능성      | 주로 모델 성능 비교 중심                                         | 단순 판별을 넘어서 **어느 구간이 왜 의심되는지** 보여주는 방향                     |
+| 저작권 보호와의 연결 | 직접적 활용보다는 탐지 연구 자체에 초점                                 | **AI 커버곡 식별을 통한 음성 저작권 보호 지원**에 초점                        |
+| 최종 산출물      | 데이터셋, baseline, benchmark 결과                           | 탐지 모델 + 웹/앱 형태의 **분석 시스템** + 결과 리포트                       |
