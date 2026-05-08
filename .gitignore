@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.swp
+*.swo
+cache/
+dataset/
+separated/
+split_dump/
+exp_result/
+*.wav
+*.flac
+*.mp3
+*.csv
+.vscode/
