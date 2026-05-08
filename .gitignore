@@ -6,7 +6,10 @@ cache/
 dataset/
 separated/
 split_dump/
-exp_result/
+
+exp_result/*
+!SingGraph2/exp_result/LA_SingGraph_ep150_bs12/weights/best.pth
+
 *.wav
 *.flac
 *.mp3
