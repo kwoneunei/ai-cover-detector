@@ -7,10 +7,10 @@ dataset/
 separated/
 split_dump/
 
-SingGraph/exp_result/*
-!SingGraph/exp_result/LA_SingGraph_ep150_bs12/
-!SingGraph/exp_result/LA_SingGraph_ep150_bs12/weights/
-!SingGraph/exp_result/LA_SingGraph_ep150_bs12/weights/best.pth
+exp_result/*
+!exp_result/LA_SingGraph_ep150_bs12/
+!exp_result/LA_SingGraph_ep150_bs12/weights/
+!exp_result/LA_SingGraph_ep150_bs12/weights/best.pth
 
 *.wav
 *.flac
