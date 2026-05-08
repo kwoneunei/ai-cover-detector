@@ -1,259 +1,106 @@
-<<<<<<< HEAD
-# 🎵 AI Cover Song Detection — 오디오 딥페이크 탐지 기술을 활용한 AI 커버곡 식별 시스템
+# AI Cover Detection System
 
----
+오디오 딥페이크 탐지 기술을 활용한 **AI 커버곡 식별 및 음성 저작권 보호 보조 시스템**입니다.  
+본 프로젝트는 AI 커버곡 여부를 **법적 판정 도구가 아닌 사전 분석 및 판단 보조용 시스템**으로 정의하며,  
+주요 활용 대상을 일반 사용자보다 **음악 산업 관계자 및 저작권 관리 주체**로 구체화합니다.  
+또한 초기에는 웹 기반 시스템으로 구현하고, 이후 외부 플랫폼 및 기업 시스템과 연동 가능한 **API 확장 구조**를 목표로 합니다.  [oai_citation:1‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-## 📌 프로젝트 소개
+## 프로젝트 배경
 
-생성형 AI 기술의 발전으로 특정 가수의 목소리를 모방한 AI 커버곡이 YouTube, SNS 등 플랫폼에서 빠르게 확산되고 있습니다. 이러한 AI 커버곡은 가수의 **음성권 및 저작권 침해** 문제를 초래할 수 있습니다.
+AI 커버곡의 확산으로 인해,
+- AI 커버곡과 실제 가창을 구분할 수 있는 기술의 필요성이 커졌고
+- 음성 저작권 침해 가능성에 대응할 수 있는 분석 도구가 요구되고 있습니다.  [oai_citation:2‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-기존 오디오 딥페이크 탐지 모델은 주로 연구용 데이터셋에서만 성능이 검증되었을 뿐, **실제 AI 커버곡 환경에서의 동작 여부는 충분히 검증되지 않았습니다.**
+본 프로젝트는 단순 탐지 모델 구현에 그치지 않고,
+사용자가 음원을 업로드하면 AI 커버곡 여부를 분석하고 결과를 시각적으로 제공하는
+**웹 기반 판별 시스템**까지 구현하는 것을 목표로 합니다.  [oai_citation:3‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-본 프로젝트는 SingFake를 베이스라인으로, 실제 플랫폼에서 수집한 AI 커버곡 데이터를 활용해 모델을 파인튜닝하고, 음원 파일을 업로드하면 AI 커버곡 여부를 자동으로 판별해주는 **웹 기반 서비스**까지 구현하는 것을 목표로 합니다.
+## 변경된 목표
 
----
+중간보고서 기준 본 프로젝트의 목표는 다음 세 가지입니다.  [oai_citation:4‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-## 🎯 프로젝트 목표
+1. **RawBoost 적용 조건에서 SingGraph 학습 및 기준 성능 확인**
+   - WildSVDD 데이터셋 기반 학습
+   - RawBoost O / Beat Matching X 조건으로 모델 학습
+   - 기준 성능(EER) 확보 및 후속 비교 기준 설정
 
-### 1. 기존 딥페이크 탐지 모델의 실환경 적용 가능성 검증
-- AASIST 등 기존 오디오 딥페이크 탐지 모델 적용
-- SingFake, CtrSVDD 공개 데이터셋에서 평가된 기존 모델들을 YouTube AI 커버곡 환경에서 추가 테스트
-- 연구용 데이터셋과 실제 플랫폼 환경 간의 성능 차이 분석
+2. **Beat Matching 추가 적용에 따른 성능 변화 검증**
+   - 동일한 WildSVDD 데이터셋 사용
+   - 음원 전처리 후 RawBoost O / Beat Matching O 조건으로 모델 학습
+   - Beat Matching 적용 전후 성능 비교
 
-### 2. 실환경 반영 학습을 통한 탐지 성능 향상
-- AI 커버곡 데이터셋 수집 및 정제
-- Augmentation 기반 재학습 및 모델 구조 개선
-- 실제 업로드 환경(압축, 리버브, 노이즈)에 대한 적응력 향상
+3. **웹 기반 AI 커버곡 판별 시스템 구현**
+   - 개선된 최종 모델을 웹 기반 시스템과 연동
+   - 사용자의 음원 파일 업로드 기능 제공
+   - AI 커버곡 여부 자동 판별
+   - 판별 결과의 시각적 제공
 
-### 3. 웹 기반 AI 커버곡 판별 시스템 구현
-- 사용자가 음원 파일을 업로드하면 AI 커버곡 여부 자동 판별
-- 판별 결과와 신뢰도를 직관적으로 시각화
+## 개발 방향 변경 사항
 
----
+초기에는 유튜브 기반 데이터셋 구축을 계획했으나, 저작권 문제로 직접 수집 및 활용에 어려움이 있어  
+대체 가능한 공개 데이터셋인 **WildSVDD**를 활용하는 방향으로 계획을 수정했습니다.  
+또한 SingGraph에서 사용된 SingFake 기반 사전학습 모델 가중치가 공개되지 않아,  
+**SingFake 사전학습 후 추가학습 방식 대신 WildSVDD로 처음부터 학습하는 방식**으로 개발 방법을 변경했습니다.  [oai_citation:5‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-## 🗂️ 데이터셋
+## 현재 개발 방법
 
-| 데이터셋 | 설명 | 비고 |
-|---|---|---|
-| [SingFake](https://singfake.org/) | 베이스라인. bonafide 28.93h + deepfake 29.40h | ICASSP 2024 |
-| 자체 수집 데이터 | YouTube 등에서 수집한 실제 AI 커버곡 | 본 프로젝트 구축 |
+현재 프로젝트는 다음 흐름으로 진행됩니다.  [oai_citation:6‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-### 자체 데이터 수집 파이프라인
+1. **WildSVDD 데이터셋 기반 SingGraph 학습 파이프라인 구성**
+2. **RawBoost 적용 조건에서 1차 학습 및 성능 측정**
+3. **Beat Matching 적용을 위한 보컬/반주 분리 전처리**
+4. **Beat Matching 적용 조건 학습**
+5. **두 조건의 성능 비교 및 효과 분석**
+6. **최종 모델의 웹 연동 데모 구현**
 
-```
-YouTube/Bilibili 수집 (yt-dlp)
-  → 오디오 추출 (ffmpeg, 16kHz)
-  → 보컬 분리 (Demucs htdemucs)
-  → 보컬 구간 세그먼트 추출 (PyAnnote VAD)
-  → 클립 필터링 및 메타데이터 어노테이션
-```
+개발 일정은 다음과 같이 정리됩니다.  [oai_citation:7‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
----
+- ~3/18: 프로젝트 주제 및 방향 설정, 제안서 작성 마무리
+- ~4/13: 기존 SingGraph 구조 정리, WildSVDD 데이터셋 전처리
+- ~4/30: SingGraph를 활용한 WildSVDD 학습 진행
+- ~5/13: 개선된 최종 모델을 웹과 연동하고 데모 시스템 구현
+- ~5/25: 최종 성능 정리, 결과 분석, 보고서 및 발표 자료 작성
 
-## 🧠 모델
+## 시스템 개요
 
-베이스라인으로 평가하는 모델들은 다음과 같습니다.
+본 시스템은 다음 단계로 동작합니다.  [oai_citation:8‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-| 모델 | 설명 |
-|---|---|
-| LFCC + AASIST | 스펙트로그램 기반 경량 모델 |
-| Wav2Vec2 + AASIST | Raw waveform 기반, SingFake 논문에서 평가된 베이스라인 |
-| Whisper encoder | 노이즈 강건성 강점 |
-| SingGraph | MERT + wav2vec2 + Graph, 현재 SOTA |
+1. **음원 업로드**
+2. **오디오 전처리**
+3. **AI 커버곡 탐지**
+4. **결과 분석 및 시각화**
+5. **결과 제공 / 향후 API 확장 고려**
 
-파인튜닝은 각 모델의 **사전학습된 체크포인트(ASVspoof 등으로 학습된 원본 가중치)**를 불러와, SingFake 및 수집된 실환경 AI 커버곡 데이터로 진행합니다.
+## 현재 중간 결과
 
----
+중간보고서 기준 초기 실험 결과는 다음과 같습니다.  
+현재는 **RawBoost만 적용한 조건의 초기 결과**가 확보되어 있으며,  
+**Beat Matching 적용 실험은 전처리 단계 진행 중**이었습니다.  [oai_citation:9‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-## 🛠️ 개발 환경 및 기술 스택
+| Model | Augmentation | Train EER | Dev EER | Test_A EER |
+|---|---|---:|---:|---:|
+| SingGraph | RawBoost O / Beat Matching X | 25.22% | 29.03% | 34.76% |
+| SingGraph | RawBoost O / Beat Matching O | 진행 중 | 진행 중 | 진행 중 |
 
-| 분류 | 스택 |
-|---|---|
-| 언어 | Python 3.10+ |
-| 딥러닝 | PyTorch |
-| 오디오 처리 | Librosa, ffmpeg, Demucs, PyAnnote |
-| 웹 백엔드 | FastAPI (또는 Flask) |
-| 웹 프론트엔드 | HTML / CSS / JavaScript |
-| 실험 관리 | WandB |
+## 웹 UI 방향
 
----
+웹페이지는 **Streamlit** 기반으로 프로토타입을 제작했습니다.  
+선정 이유는 다음과 같습니다.  [oai_citation:10‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
-## 📊 평가 지표
+- 파이썬 기반으로 개발이 편리함
+- GitHub 연동이 쉬워 협업 및 버전 관리가 용이함
+- 결과 시각화에 유리함
+- 프로토타입 제작 속도가 빠름
 
-- **EER** (Equal Error Rate) — SingFake 공식 지표
-- **F1-score**
-- **ROC-AUC**
-- Seen/Unseen singer 분리 평가
-- Vocal / Mixture 입력 형태별 비교
+웹 UI는 다음 기능을 중심으로 구성합니다.  [oai_citation:11‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
 
----
+- 분석 음원 업로드
+- 음성 패턴 분석
+- 결과 확인
+- 판별 결과 및 위험 구간 시각화
 
-## 📁 프로젝트 구조
+## 참고 문헌
 
-```
-📦 ai-cover-detection
- ┣ 📂 data/
- ┃ ┣ 📂 raw/                  # 수집된 원본 오디오
- ┃ ┗ 📂 processed/            # 전처리 완료 데이터
- ┣ 📂 src/
- ┃ ┣ 📂 data_collection/      # yt-dlp 크롤링, 전처리 파이프라인
- ┃ ┣ 📂 models/               # AASIST, Wav2Vec2, SingGraph 구현체
- ┃ ┣ 📂 train/                # 학습 스크립트
- ┃ ┣ 📂 evaluate/             # EER, F1 평가 스크립트
- ┃ ┗ 📂 web/                  # FastAPI 백엔드 + 프론트엔드
- ┣ 📂 configs/                # 실험 설정 파일 (yaml)
- ┣ 📂 notebooks/              # 분석 및 시각화
- ┣ 📜 requirements.txt
- ┗ 📜 README.md
-```
-
----
-
-## 🗓️ 개발 일정
-
-| 기간 | 내용 |
-|---|---|
-| ~3/18 | 프로젝트 주제 및 방향 설정, 제안서 작성 완료 ✅ |
-| ~4/13 | 공개 데이터셋 학습, 베이스라인 모델 실험, 중간 보고서 작성 |
-| ~4/30 | Augmentation / Consistency loss 기반 성능 개선 실험 |
-| ~5/13 | 모델 최종 점검, 웹 서비스 연동 및 데모 구현 |
-| ~5/25 | 결과 보고서 작성 |
-
----
-
-## 📈 예상 결과 및 기대효과
-
-- 기존 오디오 딥페이크 탐지 모델의 실환경 성능을 **정량적으로 분석**한 결과 제공
-- SingFake 베이스라인 대비 **실환경 AI 커버곡 탐지 성능 향상** 모델 제안
-- 음원 파일 업로드만으로 AI 커버곡 여부를 확인할 수 있는 **웹 서비스 구현**
-- 음성 저작권 침해 방지에 기여할 수 있는 기술적·사회적 활용 가능성 검증
-
-
----
-
-## 📚 참고 문헌
-
-1. Y. Zang et al., "SingFake: Singing Voice Deepfake Detection," *ICASSP 2024*
-2. J. Jung et al., "AASIST: Audio Anti-Spoofing using Integrated Spectro-Temporal Graph Attention Networks," *ICASSP 2022*
-3. A. Baevski et al., "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations," *NeurIPS 2020*
-4. Y. Zang et al., "CtrSVDD: A Benchmark Dataset and Baseline Analysis for Controlled Singing Voice Deepfake Detection," *Interspeech 2024*
-
-
-
-
-
-
-----
-| 구분          | SingFake                                               | 우리 프로젝트                                                   |
-| ----------- | ------------------------------------------------------ | --------------------------------------------------------- |
-| 프로젝트 성격     | singing deepfake detection을 위한 **데이터셋 및 benchmark 연구** | AI 커버곡 식별을 실제로 수행하는 **서비스형 시스템 개발**                       |
-| 핵심 목표       | 인간 노래와 AI 노래를 구분할 수 있는 **탐지 문제 제안 및 성능 평가**            | 사용자가 업로드한 음원이 **AI 커버곡인지 아닌지 판별**하고 결과를 제공                |
-| 입력 데이터      | 연구용으로 정리된 **노래 오디오 클립 데이터셋**                           | 사용자가 실제로 업로드한 **완성 음원(mp3, wav 등)**                       |
-| 출력 형태       | bonafide / deepfake 분류 결과, benchmark 성능 수치             | AI 여부 판별 + **의심 구간 시각화 + 설명 가능한 분석 결과**                   |
-| 활용 목적       | 연구자들이 모델 성능을 비교하는 **기준 데이터셋 제공**                       | 일반 사용자·창작자·플랫폼이 활용할 수 있는 **실용적 판별 도구**                    |
-| 데이터 관점      | in-the-wild singing deepfake를 모아 **탐지 과제 자체를 정립**      | 선행연구를 바탕으로 **실제 사용 환경에 맞는 입력 처리 파이프라인** 구축                |
-| 시스템 흐름      | 데이터셋 기반 오프라인 실험 중심                                     | 업로드 → 전처리 → 구간 분할 → 판별 → 결과 리포트까지 이어지는 **end-to-end 시스템** |
-| 설명 가능성      | 주로 모델 성능 비교 중심                                         | 단순 판별을 넘어서 **어느 구간이 왜 의심되는지** 보여주는 방향                     |
-| 저작권 보호와의 연결 | 직접적 활용보다는 탐지 연구 자체에 초점                                 | **AI 커버곡 식별을 통한 음성 저작권 보호 지원**에 초점                        |
-| 최종 산출물      | 데이터셋, baseline, benchmark 결과                           | 탐지 모델 + 웹/앱 형태의 **분석 시스템** + 결과 리포트                       |
-=======
-# ai-cover-detector
-
-# CoverGuard
-오디오 딥페이크 탐지 기술을 활용한 **AI 커버곡 식별 및 음성 저작권 보호 시스템**입니다.  
-이 프로젝트는 기존 오디오 딥페이크 탐지 모델이 실제 AI 커버곡 환경에서도 안정적으로 동작하는지 검증하고, 이를 바탕으로 사용자가 음원을 업로드하면 AI 커버곡 여부를 판별할 수 있는 웹 기반 시스템을 구현하는 것을 목표로 합니다.
-
-## 1. 프로젝트 개요
-최근 생성형 AI 기술의 발전으로 특정 가수의 목소리를 모방한 AI 커버곡이 유튜브와 SNS를 중심으로 빠르게 확산되고 있습니다.  
-이 과정에서 사용자는 실제 가수의 음성과 AI 음성을 구분하기 어려워졌고, 창작자와 권리자 입장에서는 음성권 및 저작권 침해 문제가 발생할 수 있습니다.  
-본 프로젝트는 이러한 문제를 해결하기 위해, 오디오 딥페이크 탐지 기술을 실제 AI 커버곡 환경에 적용하여 **음성 저작권 보호를 위한 판별 시스템**을 개발합니다.  
-
-## 2. 프로젝트 목표
-본 프로젝트의 목표는 다음과 같습니다.
-
-- 기존 오디오 딥페이크 탐지 모델의 **실환경 적용 가능성 검증**
-- 실제 업로드 환경을 반영한 학습을 통해 **탐지 성능 향상**
-- 사용자가 음원 파일을 업로드하면 AI 커버곡 여부를 판별하는 **웹 기반 서비스 구현**  
-
-## 3. 문제 정의
-기존 오디오 딥페이크 탐지 모델은 주로 연구용 데이터셋에서 성능이 검증되어 왔습니다.  
-하지만 실제 AI 커버곡처럼 압축, 리버브, 노이즈가 포함된 환경에서도 동일하게 동작하는지는 충분히 확인되지 않았습니다.  
-따라서 본 프로젝트에서는 공개 데이터셋으로 학습한 모델을 실제 유튜브 AI 커버곡 데이터에 적용하여 성능 차이를 분석하고, 이를 개선하기 위한 재학습 및 구조 보완을 수행합니다.  
-
-## 4. 주요 기능
-- 오디오 파일 업로드
-- 입력 음원의 AI 커버곡 여부 판별
-- 판별 결과 및 신뢰도 시각화
-- 실제 플랫폼 환경 음원에 대한 분석 지원
-- 공개 데이터셋 및 실제 수집 데이터 기반 성능 평가 
-
-## 5. 시스템 요구사항
-본 시스템은 다음 요구사항을 만족하도록 설계합니다.
-
-1. 사용자가 오디오 파일을 업로드할 수 있어야 합니다.
-2. 입력된 음원에 대해 AI 커버곡 여부를 판별할 수 있어야 합니다.
-3. 실제 플랫폼 환경의 음원에서도 안정적으로 결과를 제공할 수 있어야 합니다.
-4. 판별 결과를 사용자가 이해하기 쉬운 형태로 제공할 수 있어야 합니다.
-5. 웹 환경에서 업로드, 분석, 결과 확인 기능을 제공할 수 있어야 합니다.
-6. 공개 데이터셋과 실제 수집 데이터에 대해 성능을 측정할 수 있어야 합니다. 
-
-## 6. 개발 방법
-프로젝트는 다음과 같은 방식으로 진행합니다.
-
-### 6.1 모델 구현 및 적용
-Python 및 PyTorch 기반으로 기존 오디오 딥페이크 탐지 모델을 구현하고, 데이터 특성에 맞게 fine-tuning 및 일부 구조 개선을 수행합니다.  
-
-### 6.2 오디오 전처리
-Librosa와 FFmpeg를 활용하여 샘플링 주파수를 통일하고, 노이즈 환경을 고려한 오디오 전처리 및 특징 추출을 수행합니다.  
-
-### 6.3 데이터셋 구성
-SingFake 데이터셋을 기반으로 학습 데이터를 구성하고, 실제 AI 커버곡 데이터를 추가 수집하여 실환경 특성을 반영합니다.  
-
-### 6.4 실험 및 평가
-GPU 환경에서 모델 학습 및 추론을 수행하며, F1-score, ROC-AUC 등의 지표를 활용해 모델 성능을 평가하고 비교 분석합니다.  
-
-### 6.5 웹 서비스 구현
-Flask 또는 FastAPI 기반 백엔드를 구축하고, HTML/CSS/JavaScript 기반 프론트엔드를 통해 음원 업로드 및 판별 결과 확인 기능을 제공합니다.  
-
-## 7. 기술 스택
-### AI / 모델링
-- Python
-- PyTorch
-
-### 오디오 처리
-- Librosa
-- FFmpeg
-
-### 백엔드
-- Flask 또는 FastAPI
-
-### 프론트엔드
-- HTML
-- CSS
-- JavaScript
-
-### 실험 환경
-- GPU 환경 
-
-## 8. 기대 효과
-본 프로젝트를 통해 다음과 같은 결과를 기대할 수 있습니다.
-
-- 기존 딥페이크 탐지 모델의 실제 AI 커버곡 환경 성능 검증
-- AI 커버곡 특성을 반영한 데이터 기반 탐지 모델 구현
-- 음성 저작권 침해 가능성을 평가할 수 있는 웹 기반 서비스 구현 
-
-## 9. 향후 확장 방향
-- 더 다양한 실제 플랫폼 데이터 수집
-- 음성 유사도 분석 기능 고도화
-- 웹 서비스의 사용자 경험 개선
-- 창작자 및 권리자를 위한 실사용 도구로 확장
-
-## 10. 참고 문헌
-[1] Y. Zang, Y. Zhang, M. Heydari, and Z. Duan, “SingFake: Singing Voice Deepfake Detection,” ICASSP 2024, 2024.  
-[2] J. Jung, H. Heo, H. Tak, H. Shim, J. S. Chung, B. Lee, H. Yu, and N. Evans, “AASIST: Audio Anti-Spoofing using Integrated Spectro-Temporal Graph Attention Networks,” ICASSP 2022, 2022.  
-[3] A. Baevski, H. Zhou, A. Mohamed, and M. Auli, “wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations,” NeurIPS 2020, 2020.  
-[4] Y. Zang, J. Shi, Y. Zhang, R. Yamamoto, J. Han, Y. Tang, S. Xu, W. Zhao, J. Guo, T. Toda, and Z. Duan, “CtrSVDD: A Benchmark Dataset and Baseline Analysis for Controlled Singing Voice Deepfake Detection,” Interspeech 2024, 2024.  
-[5] Y. Zang, Y. Zhang, M. Heydari, and Z. Duan, “SingFake: Singing Voice Deepfake Detection Dataset,” SingFake Project Page, University of Rochester, 2024.  
-[6] H. Tak, J. Patino, M. Todisco, A. Nautsch, N. Evans, and A. Larcher, “End-to-End Anti-Spoofing with RawNet2,” ICASSP 2021, 2021.  
-[7] X. Wu, R. He, Z. Sun, and T. Tan, “A Light CNN for Deep Face Representation with Noisy Labels,” IEEE Transactions on Information Forensics and Security, 2018.  
->>>>>>> 9e4c21f (readMe)
+[1] Y. Zang, Y. Zhang, M. Heydari, and Z. Duan, “SingFake: Singing Voice Deepfake Detection,” ICASSP 2024, 2024.  [oai_citation:12‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)  
+[2] X. Chen, H. Wu, J.-S. R. Jang, and H.-y. Lee, “Singing Voice Graph Modeling for SingFake Detection,” Interspeech 2024, 2024.  [oai_citation:13‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)  
+[3] Y. Zhang, Y. Zang, J. Shi, R. Yamamoto, T. Toda, and Z. Duan, “SVDD 2024: The Inaugural Singing Voice Deepfake Detection Challenge,” IEEE SLT 2024, 2024.  [oai_citation:14‡임나경3107_52975_4405825_고급캡스톤디자인_중간보고서_임나경(20233107).pdf](sediment://file_00000000166072098a26aa218da7cd7f)
